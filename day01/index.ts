@@ -1,8 +1,5 @@
-// import { file } from 'bun';
-// const input = await file('input.txt').text();
-
-import { readFileSync } from 'node:fs';
-const input = readFileSync('input.txt').toString();
+import { file } from 'bun';
+const input = await file('input.txt').text();
 
 const solution = (input: string, top = 1): number => {
   return input
