@@ -13,7 +13,6 @@ const scoreMap = {
   'C Z': 6,
 };
 
-// rock paper scissors
 const translatedScoreMap = {
   'A X': 'A Z', // lose
   'A Y': 'A X', // draw
