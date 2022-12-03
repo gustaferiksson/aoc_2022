@@ -1,8 +1,9 @@
 import { file } from 'bun';
 import { describe, expect, it } from 'bun:test';
-import { input, day02 } from '.';
+import { day02 } from '.';
 
 const example = await file('example.txt').text();
+const input = await file('input.txt').text();
 
 describe('Day 02', () => {
   it('Part 1 - Example', () => {
