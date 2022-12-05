@@ -38,7 +38,7 @@ const parseMove = (move: string): Move => {
   };
 };
 
-const solution = (input: string, reverse = true): any => {
+const solution = (input: string, reverse = true): string => {
   const { crates, moves } = parseInput(input);
 
   moves.map(({ qty, from, to }) => {
