@@ -22,7 +22,7 @@ const toRange = (s: string) => {
   return { from, to };
 };
 
-const solution = (input: string, comparator: Function): any => {
+const solution = (input: string, comparator: Function): number => {
   return input
     .split('\n')
     .map(row => row.split(','))
