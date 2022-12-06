@@ -1,11 +1,11 @@
 import { file } from 'bun';
-import './array.extension';
 
 export const input = await file('input.txt').text();
 
 type Stacks = string[][];
 type Move = { amount: number; from: number; to: number };
 
+const transpose = (arr: Stacks) => arr[0].map((_, i) => arr.map(row => row[i]));
 const getTopCrates = (stacks: Stacks) => stacks.map(array => array.slice(0, 1)).join('');
 
 const parseMoves = (string: string): Move[] => {
@@ -18,10 +18,8 @@ const parseMoves = (string: string): Move[] => {
 };
 
 const parseStacks = (string: string): Stacks => {
-  return string
-    .split('\n')
-    .map(row => [...row])
-    .transpose()
+  const transposed = transpose(string.split('\n').map(row => [...row]));
+  return transposed
     .map(row => row.join('').replace(/[\[\]\d\s]/g, ''))
     .filter(x => x.length)
     .map(stack => [...stack]);

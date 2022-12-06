@@ -7,7 +7,7 @@ ENV PATH="/root/.bun/bin:${PATH}"
 COPY package.json bun.lockb tsconfig.json ./
 RUN  bun install
 
-COPY index.ts .
-COPY input.txt .
+COPY index.ts ./
+COPY input.txt ./
 
 CMD bun index.ts
