@@ -1,13 +1,9 @@
-FROM debian:stable-slim
-RUN apt-get update
-RUN apt-get install -y curl unzip
-RUN curl https://bun.sh/install | bash
-ENV PATH="/root/.bun/bin:${PATH}"
+FROM rust:1.56 as builder
+WORKDIR /usr/src/aoc
+COPY . .
+RUN cargo install --path .
 
-COPY package.json bun.lockb tsconfig.json ./
-RUN  bun install
-
-COPY index.ts ./
-COPY input.txt ./
-
-CMD bun index.ts
+FROM rust:1.56-slim
+COPY --from=builder /usr/local/cargo/bin/aoc /usr/local/bin/aoc
+COPY input.txt .
+CMD ["aoc"]
