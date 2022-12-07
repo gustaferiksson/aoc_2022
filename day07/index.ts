@@ -1,5 +1,5 @@
 import { file } from 'bun';
-export const input = await file('example.txt').text();
+export const input = await file('input.txt').text();
 
 type Directory = { name: string; size: number };
 
