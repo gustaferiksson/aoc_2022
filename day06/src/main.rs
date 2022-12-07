@@ -1,17 +1,19 @@
-use std::{collections::HashSet, env, fs};
+use std::collections::HashSet;
+use std::env;
+use std::fs;
 
 fn marker(input: &str, count: usize) -> usize {
-    return input
+    let index = input
         .chars()
         .collect::<Vec<char>>()
         .windows(count)
-        .enumerate()
-        .position(|(_i, slice)| {
+        .position(|slice| {
             let set = slice.iter().collect::<HashSet<&char>>();
             return set.len() == slice.len();
         })
-        .unwrap()
-        + count;
+        .unwrap();
+
+    return index + count;
 }
 
 fn main() {
