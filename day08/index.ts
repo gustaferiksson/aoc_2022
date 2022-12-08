@@ -5,13 +5,10 @@ type Forest = number[][];
 type Tree = { x: number; y: number; height: number };
 
 const is_tree_visible = ({ x, y, height }: Tree, forest: Forest): boolean => {
-  const forest_width = forest.at(0).length;
-  const forest_height = forest.length;
-
   if (x == 0) return true;
   if (y == 0) return true;
-  if (x == forest_width - 1) return true;
-  if (y == forest_height - 1) return true;
+  if (x == forest.at(0).length - 1) return true;
+  if (y == forest.length - 1) return true;
 
   const up = forest.slice(0, y).map(n => n.at(x));
   const down = forest.slice(y + 1).map(n => n.at(x));
