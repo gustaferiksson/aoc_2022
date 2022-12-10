@@ -17,8 +17,7 @@ const get_cycles = (input: string): Cycles => {
 
     if (op == Op.noop) cycles.push(v);
     if (op == Op.addx) {
-      cycles.push(v);
-      cycles.push(v);
+      cycles.push(v, v);
       v += +value;
     }
   }
