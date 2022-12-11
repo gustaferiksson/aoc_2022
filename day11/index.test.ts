@@ -10,15 +10,15 @@ describe('Day 11', () => {
     expect(day11.part1(example)).toBe(10605);
   });
 
-  // it('Part 2 - Example', () => {
-  //   expect(day11.part2(example2)).toBe(36);
-  // });
+  it('Part 2 - Example', () => {
+    expect(day11.part2(example)).toBe(2713310158);
+  });
 
-  // it('Part 1 - Input', () => {
-  //   expect(day11.part1(input)).toBe(11760);
-  // });
+  it('Part 1 - Input', () => {
+    expect(day11.part1(input)).toBe(55930);
+  });
 
-  // it('Part 2 - Input', () => {
-  //   expect(day11.part2(input)).toBe(result_part2_input);
-  // });
+  it('Part 2 - Input', () => {
+    expect(day11.part2(input)).toBe(14636993466);
+  });
 });

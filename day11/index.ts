@@ -1,95 +1,62 @@
 import { file } from 'bun';
 export const input = await file('input.txt').text();
 
-class Monkey {
-  items: number[];
-  operation: Function;
-  test: Function;
-  count = 0;
-
-  // todo: create proper monkey parser
-
-  constructor(items: number[], operation: (item: number) => number, test: (item: number) => number) {
-    this.items = items;
-    this.operation = operation;
-    this.test = test;
-  }
-
-  throw(): [number, number] {
-    this.count++;
-    const firstItem = this.items.shift();
-    // const worryLevel = Math.floor(this.operation(firstItem) / 3);
-    const worryLevel = this.operation(firstItem);
-    return [this.test(worryLevel), worryLevel];
-  }
-
-  catch(item: number) {
-    this.items.push(item);
-  }
+enum Operator {
+  add = '+',
+  multiply = '*',
 }
 
-const part1 = (input: string): number => {
-  const monkey0 = new Monkey(
-    [89, 84, 88, 78, 70],
-    x => x * 5,
-    x => (!(x % 7) ? 6 : 7)
-  );
-  const monkey1 = new Monkey(
-    [76, 62, 61, 54, 69, 60, 85],
-    x => x + 1,
-    x => (!(x % 17) ? 0 : 6)
-  );
-  const monkey2 = new Monkey(
-    [83, 89, 53],
-    x => x + 8,
-    x => (!(x % 11) ? 5 : 3)
-  );
-  const monkey3 = new Monkey(
-    [95, 94, 85, 57],
-    x => x + 4,
-    x => (!(x % 13) ? 0 : 1)
-  );
-  const monkey4 = new Monkey(
-    [82, 98],
-    x => x + 7,
-    x => (!(x % 19) ? 5 : 2)
-  );
-  const monkey5 = new Monkey(
-    [69],
-    x => x + 2,
-    x => (!(x % 2) ? 1 : 3)
-  );
-  const monkey6 = new Monkey(
-    [82, 70, 58, 87, 59, 99, 92, 65],
-    x => x * 11,
-    x => (!(x % 5) ? 7 : 4)
-  );
-  const monkey7 = new Monkey(
-    [91, 53, 96, 98, 68, 82],
-    x => x * x,
-    x => (!(x % 3) ? 4 : 2)
-  );
+interface Monkey {
+  id: number;
+  items: number[];
+  operation: {
+    operator: Operator;
+    value: string;
+  };
+  divisor: number;
+  test_true: number;
+  test_false: number;
+  count: number;
+}
 
-  const monkeys = [monkey0, monkey1, monkey2, monkey3, monkey4, monkey5, monkey6, monkey7];
-  const divisible_multiple = 7 * 17 * 11 * 13 * 19 * 2 * 5 * 3;
-  for (const _ of Array(10000)) {
+const parseMonkey = (monkey_raw: string): Monkey => {
+  const [index, starting, op, test, if_true, if_false] = monkey_raw.split('\n').map(line => line.trim());
+
+  const id = +index.split('').at(-2);
+  const items = starting.match(/\d+/g).map(x => +x);
+  const operation = { operator: op.split(' ').at(-2) as Operator, value: op.split(' ').at(-1) };
+  const divisor = +test.split(' ').at(-1);
+  const test_true = +if_true.split(' ').at(-1);
+  const test_false = +if_false.split(' ').at(-1);
+  const count = 0;
+  return { id, items, operation, divisor, test_true, test_false, count };
+};
+
+const solution = (input: string, rounds = 20): number => {
+  const monkeys = input.split('\n\n').map(parseMonkey);
+
+  const common_divisor = monkeys.reduce((acc, curr) => acc * curr.divisor, 1);
+
+  for (const _ of Array(rounds)) {
     for (const monkey of monkeys) {
-      while (monkey.items.length) {
-        const [to, item] = monkey.throw();
-        monkeys.at(to).catch(item % divisible_multiple);
+      const { items, operation, divisor, test_true, test_false } = monkey;
+      while (items.length) {
+        const old = items.shift();
+        const value = operation.value === 'old' ? old : +operation.value;
+        const worryLevel = operation.operator === Operator.add ? old + value : old * value;
+        const worryLevelAfterInspect = rounds === 20 ? Math.floor(worryLevel / 3) : worryLevel % common_divisor;
+        monkey.count++;
+        monkeys.at(worryLevelAfterInspect % divisor === 0 ? test_true : test_false).items.push(worryLevelAfterInspect);
       }
     }
   }
-  console.log(monkeys);
   monkeys.sort((a, b) => b.count - a.count);
   return monkeys.at(0).count * monkeys.at(1).count;
 };
 
-// const part2 = (input: string): string => {};
-
 export const day11 = {
-  part1,
-  // part2,
+  part1: (input: string) => solution(input),
+  part2: (input: string) => solution(input, 10000),
 };
 
 process.env.part && console.log(day11[process.env.part](input));
