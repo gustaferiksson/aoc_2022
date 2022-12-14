@@ -40,9 +40,9 @@ const part2 = (input: string) => {
   return dividers.map(x => parse.indexOf(x) + 1).reduce((a, b) => a * b);
 };
 
-export const day12 = {
+export const day13 = {
   part1,
   part2,
 };
 
-process.env.part && console.log(day12[process.env.part](input));
+process.env.part && console.log(day13[process.env.part](input));
